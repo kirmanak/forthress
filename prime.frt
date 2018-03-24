@@ -26,4 +26,15 @@
         0 = if 0 else drop 1 then
         then 
     then
-  then ;
+then ;
+
+: prime-allot ( n )
+    ( calculates the result )
+    prime
+    ( allocates the memory and stores an address twice )
+    cell% allot dup
+    ( places the result under an address )
+    rot swap
+    ( writes the result into the memory )
+    !
+;
