@@ -1,10 +1,21 @@
 include prime.frt
+: next_prime ( x -- a )
+    ( a is the closest prime num, which is also bigger than x )
+    repeat
+        ( x )
+        1 +
+        ( x++ )
+        dup prime 
+        ( x++ is_x++_prime )
+    until
+;
+
 : factor ( num -- prime_1 prime_2 ... prime_n )
-    2 repeat
+    ( num )
+    2 repeat ( 2 is the first i )
+        ( i is a candidat for prime_j )
         ( num i )
-        swap dup 
-        ( i num num )
-        rot swap 
+        over
         ( num i num )
         prime if ( if num is prime already)
             ( num i )
@@ -12,31 +23,19 @@ include prime.frt
             ( num 1 )
         else  ( if num is not prime yet )
             ( num i )
-            dup rot 
-            ( i i num )
-            dup rot
-            ( i num num i )
+            2dup
+            ( num i num i )
             % if ( if number mod i is not 0 ) 
                 ( num i )
-                repeat 
-                    ( num i )
-                    1 +
-                    ( num i+1 )
-                    dup prime not
-                    ( num i+1 is_i+1_composite )
-                until 0 ( to continue main loop )
+                next_prime 0
                 ( num new_i 0 )
             else ( if number mod i is 0 )
-                ( i num )
-                swap dup 
-                ( num i i )
-                rot swap
-                ( i num i )
-                / swap
-                ( num/i i )
-                dup rot
-                ( i i num/i )
-                swap 0
+                ( num i )
+                dup rot 
+                ( i i num )
+                swap /
+                ( i num/i )
+                over 0 ( 0 is a condition to continue main loop )
                 ( i num/i i 0)
             then
         then
