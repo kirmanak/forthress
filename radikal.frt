@@ -43,7 +43,6 @@ include prime.frt
 ;
 
 : radikal ( num -- radikal )
-    ( TODO: what if num is 504 ? )
     ( num )
     1 1 rot
     ( 1 1 num )
@@ -80,7 +79,17 @@ include prime.frt
                 ( rad prev num i )
                 swap over
                 ( rad prev i num i )
-                / swap
+                repeat ( divides as much as possible  )
+                    ( rad prev i num i )
+                    / swap
+                    ( rad prev num/i i )
+                    dup rot swap
+                    ( rad prev i num/i i )
+                    2dup %
+                    ( rad prev i num/i i num/i%i )
+                until
+                ( rad prev i num/i i )
+                drop swap
                 ( rad prev num/i i )
                 rot 2dup
                 ( rad num/i i prev i prev )
